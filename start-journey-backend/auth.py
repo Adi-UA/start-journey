@@ -1,0 +1,1 @@
+HF_TOKEN="your hugging face api key"
