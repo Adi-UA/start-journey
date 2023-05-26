@@ -34,6 +34,6 @@ def generate(prompt: str):
 
     buffer = BytesIO()
     result_img.save(buffer, format="PNG")
-    img_str = base64.b64decode(buffer.getvalue())
+    img_str = base64.b64encode(buffer.getvalue())
 
-    return Response(content=img_str, media_type="image/PNG")
+    return Response(content=img_str, media_type="image/png")
