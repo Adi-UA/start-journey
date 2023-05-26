@@ -6,7 +6,7 @@ Image Generation wtih Stable Diffusion in PyTorch, HuggingFace and Diffusers. Th
 
 Note: This project's backend REQUIRES CUDA. If you are tryinig to set this up locally, please make sure to install a version of PyTorch that supports CUDA when installting the requirements. I am using [CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)
 
-## Runing the Backend
+## Running the Backend
 
 If you have CUDA installed (I will assume version 11.8 for the following commands), run the following:
 
