@@ -1,19 +1,11 @@
-import {
-  ChakraProvider,
-  Heading,
-  Container,
-  Input,
-  Button,
-  Wrap,
-  Spinner,
-  Center,
-} from "@chakra-ui/react";
+import { ChakraProvider, Heading, Container, Center } from "@chakra-ui/react";
 
 import { useQuery } from "@tanstack/react-query";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import ImageSection from "./ImageSection";
 import UserInput from "./UserInput";
+import theme from "./theme";
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
@@ -35,7 +27,7 @@ export default function App() {
   };
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Container>
         <Center>
           <Heading>Start Journey 🚢</Heading>

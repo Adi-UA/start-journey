@@ -14,10 +14,14 @@ export default function ImageSection(props: ImageSectionProps) {
       {isFetching && <SkeletonCircle m={20} size="100"></SkeletonCircle>}
 
       {base64Img === undefined && !isFetching && (
-        <Image pt={5} src={defaultImg} />
+        <Image boxShadow="dark-lg" m={5} src={defaultImg} />
       )}
       {base64Img && !isFetching && (
-        <Image pt={5} src={`data:image/png;base64, ${base64Img}`}></Image>
+        <Image
+          boxShadow="dark-lg"
+          pt={5}
+          src={`data:image/png;base64, ${base64Img}`}
+        ></Image>
       )}
     </Center>
   );

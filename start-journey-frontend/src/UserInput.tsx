@@ -24,7 +24,7 @@ export default function UserInput(props: UserInputProps) {
             const target = e.target as HTMLTextAreaElement;
             setInputText(target.value);
           }}
-          width="350px"
+          w={350}
         ></Input>
         <Button onClick={() => refetch(inputText)} colorScheme={"yellow"}>
           {isFetching ? <Spinner /> : "Generate"}
