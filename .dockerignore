@@ -1,0 +1,10 @@
+.git
+**/.venv
+**/node_modules
+**/__pycache__
+**/*.pyc
+frontend/dist
+backend/tests
+**/.env
+*.md
+readme_img.png

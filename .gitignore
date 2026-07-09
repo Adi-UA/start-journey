@@ -1,4 +1,26 @@
-**/venv/
-start-journey-backend/result.png
-start-journey-backend/auth.py
-**/__pycache__/
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Node / frontend
+node_modules/
+dist/
+dist-ssr/
+
+# Env / secrets
+.env
+*.local
+
+# Model + inference cache and stray outputs
+.cache/
+result.png
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

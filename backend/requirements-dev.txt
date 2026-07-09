@@ -1,0 +1,6 @@
+# Tooling for tests and linting. Torch-free: the tests mock the pipeline, so
+# they run without a GPU or model download.
+-r requirements-web.txt
+pytest==8.3.4
+httpx==0.28.1
+ruff==0.8.4

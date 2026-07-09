@@ -1,5 +1,6 @@
 import { extendTheme } from "@chakra-ui/react";
-import { mode, GlobalStyleProps } from "@chakra-ui/theme-tools";
+import { GlobalStyleProps, mode } from "@chakra-ui/theme-tools";
+
 const bg = "#06060a";
 
 const theme = extendTheme({

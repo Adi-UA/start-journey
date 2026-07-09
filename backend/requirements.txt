@@ -1,0 +1,2 @@
+# Full runtime: web API + Stable Diffusion. See README for CUDA vs CPU install.
+-r requirements-ml.txt
