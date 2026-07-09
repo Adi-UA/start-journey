@@ -1,4 +1,4 @@
-![Start Journey](./readme_img.png)
+![Start Journey](./assets/hero.png)
 
 # Start Journey 🚢
 
@@ -9,6 +9,12 @@ Type a prompt, get an image. Start Journey is a text-to-image web app that runs
 Stable Diffusion behind a FastAPI backend and a React frontend. The backend
 serves the built frontend from the same origin, so the whole thing runs locally
 as a single app (or one container).
+
+## Examples
+
+| A cozy cabin in a snowy forest at dusk | An astronaut riding a horse on Mars, oil painting | A neon koi pond, synthwave style |
+|:---:|:---:|:---:|
+| ![Cozy cabin in a snowy forest](./assets/example-cabin.png) | ![Astronaut riding a horse on Mars](./assets/example-astronaut.png) | ![Neon koi pond](./assets/example-koi.png) |
 
 ## How it works
 

@@ -7,4 +7,4 @@ frontend/dist
 backend/tests
 **/.env
 *.md
-readme_img.png
+assets/
