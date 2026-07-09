@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     )
 
     # Model + inference.
-    model_id: str = "stabilityai/stable-diffusion-2-1"
+    model_id: str = "Lykon/dreamshaper-8"
     device: str = "auto"  # auto | cuda | mps | cpu
     num_inference_steps: int = 25
     guidance_scale: float = 8.5

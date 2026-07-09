@@ -83,7 +83,7 @@ All settings are environment variables with the `SJ_` prefix (see
 
 | Variable | Default | Description |
 |---|---|---|
-| `SJ_MODEL_ID` | `stabilityai/stable-diffusion-2-1` | Hugging Face model id. |
+| `SJ_MODEL_ID` | `Lykon/dreamshaper-8` | Hugging Face model id. |
 | `SJ_DEVICE` | `auto` | `auto`, `cuda`, `mps`, or `cpu`. |
 | `SJ_NUM_INFERENCE_STEPS` | `25` | Denoising steps. |
 | `SJ_GUIDANCE_SCALE` | `8.5` | Classifier-free guidance strength. |
@@ -100,10 +100,11 @@ swappable with just `SJ_MODEL_ID`, no code change:
 
 | Model id | Notes |
 |---|---|
-| `stabilityai/stable-diffusion-2-1` | Default. Good quality, multi-step. |
-| `CompVis/stable-diffusion-v1-4` | Smaller/faster; lightest option. |
+| `Lykon/dreamshaper-8` | Default. High-quality SD 1.5 finetune, fast, ungated. |
+| `CompVis/stable-diffusion-v1-4` | Lighter/basic baseline. |
+| `stabilityai/sdxl-turbo` | Near-instant (1-4 steps). Set `SJ_NUM_INFERENCE_STEPS=4` and `SJ_GUIDANCE_SCALE=1` (Turbo ignores guidance). Ungated. |
 | `stabilityai/stable-diffusion-xl-base-1.0` | Best quality, ~7 GB, needs a good GPU; slow on CPU/MPS. |
-| `stabilityai/sdxl-turbo` | Near-instant (1-4 steps). Set `SJ_NUM_INFERENCE_STEPS=4` and `SJ_GUIDANCE_SCALE=1` (Turbo ignores guidance). |
+| `stabilityai/stable-diffusion-2-1` | Gated: `huggingface-cli login`, accept the license on its model page, then set `SJ_HF_TOKEN`. |
 
 Example: `SJ_MODEL_ID=stabilityai/sdxl-turbo uvicorn app:app`.
 

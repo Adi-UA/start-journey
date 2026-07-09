@@ -10,7 +10,7 @@ def test_health_reports_unloaded(client):
     assert body["status"] == "ok"
     assert body["device"] == "cpu"
     assert body["loaded"] is False
-    assert body["model_id"] == "stabilityai/stable-diffusion-2-1"
+    assert body["model_id"] == "Lykon/dreamshaper-8"
 
 
 def test_generate_returns_image(client):
