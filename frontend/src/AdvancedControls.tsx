@@ -48,6 +48,10 @@ export default function AdvancedControls({
         </SliderTrack>
         <SliderThumb />
       </Slider>
+      <Text fontSize="xs" color="whiteAlpha.600" mt={1}>
+        Denoising passes. More steps add detail but take longer; 20-30 is a
+        good range.
+      </Text>
 
       <Flex justify="space-between" mb={1} mt={3}>
         <Text fontSize="sm" color="whiteAlpha.800">
@@ -72,6 +76,10 @@ export default function AdvancedControls({
         </SliderTrack>
         <SliderThumb />
       </Slider>
+      <Text fontSize="xs" color="whiteAlpha.600" mt={1}>
+        How closely the image follows your prompt. Higher is more literal;
+        too high looks over-saturated. ~7-9 is balanced (Turbo models use 1).
+      </Text>
     </Box>
   );
 }
