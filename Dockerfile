@@ -26,10 +26,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./
 COPY --from=frontend /frontend/dist ./static
 
-# Hugging Face Spaces expects the app on port 7860. Device stays on auto so the
-# same image uses a GPU when one is present and falls back to CPU otherwise.
+# Device stays on auto so the same image uses a GPU when one is present and
+# falls back to CPU otherwise.
 ENV SJ_STATIC_DIR=static \
     SJ_DEVICE=auto \
     HF_HOME=/app/.cache/huggingface
-EXPOSE 7860
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+EXPOSE 8000
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

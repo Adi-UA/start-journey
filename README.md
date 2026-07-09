@@ -1,13 +1,3 @@
----
-title: Start Journey
-emoji: 🚢
-colorFrom: purple
-colorTo: pink
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 ![Start Journey](./readme_img.png)
 
 # Start Journey 🚢
@@ -17,13 +7,13 @@ pinned: false
 
 Type a prompt, get an image. Start Journey is a text-to-image web app that runs
 Stable Diffusion behind a FastAPI backend and a React frontend. The backend
-serves the built frontend from the same origin, so the whole thing ships as a
-single container and deploys to a free Hugging Face Space.
+serves the built frontend from the same origin, so the whole thing runs locally
+as a single app (or one container).
 
 ## How it works
 
 ```
-Browser ──> /            FastAPI serves the built React app (static files)
+Browser ──> /             FastAPI serves the built React app (static files)
 Browser ──> /api/generate ──> ImageGenerator ──> Stable Diffusion ──> PNG (base64)
 ```
 
@@ -42,17 +32,19 @@ The backend auto-detects hardware and picks the fastest available option. Set
 | Apple MPS | fp32 | tens of seconds |
 | CPU | fp32 | 1-3 minutes |
 
-The free Hugging Face Space runs on CPU, so generation there is slow but works.
-For fast results, run locally on an NVIDIA GPU or deploy to a GPU Space.
+CPU works but is slow, so a GPU (CUDA) or Apple Silicon (MPS) is recommended for
+a responsive experience.
 
-## Quick start (Docker)
+## Run with Docker (optional)
+
+The quickest way to run the whole app with one command:
 
 ```bash
 docker build -t start-journey .
-docker run -p 7860:7860 start-journey
+docker run -p 8000:8000 start-journey
 ```
 
-Open http://localhost:7860. The first request downloads the model weights
+Open http://localhost:8000. The first request downloads the model weights
 (~4 GB), which are then cached.
 
 ## Local development
@@ -75,6 +67,13 @@ uvicorn app:app --reload                  # http://localhost:8000
 ```bash
 npm install
 npm run dev                               # http://localhost:5173
+```
+
+To run as a single app locally (backend serving the built UI):
+
+```bash
+cd frontend && npm run build              # outputs to frontend/dist
+cd ../backend && SJ_STATIC_DIR=../frontend/dist uvicorn app:app  # http://localhost:8000
 ```
 
 ## Configuration
@@ -110,15 +109,6 @@ cd backend && pip install -r requirements-dev.txt && ruff check . && pytest
 # Frontend
 cd frontend && npm ci && npm run build && npm test
 ```
-
-## Deploy to Hugging Face Spaces
-
-1. Create a new **Docker** Space.
-2. Push this repository to the Space's git remote.
-
-The `README.md` front-matter (`sdk: docker`, `app_port: 7860`) and the
-`Dockerfile` are all the Space needs. It builds the image, serves the UI, and
-runs the model on CPU.
 
 ## Tech stack
 
