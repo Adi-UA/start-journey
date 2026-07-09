@@ -26,9 +26,13 @@ class FakeGenerator:
     device = "cpu"
     loaded = True
 
-    def generate(self, prompt, steps=None, guidance_scale=None):
+    def generate(self, prompt, steps=None, guidance_scale=None, progress_callback=None):
+        total = steps or 25
+        if progress_callback is not None:
+            for i in range(1, total + 1):
+                progress_callback(i, total)
         image = base64.b64encode(b"fake-png-bytes").decode("ascii")
-        return image, steps or 25, guidance_scale or 8.5
+        return image, total, guidance_scale or 8.5
 
 
 @pytest.fixture

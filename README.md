@@ -93,11 +93,26 @@ All settings are environment variables with the `SJ_` prefix (see
 The frontend reads `VITE_API_BASE` (default empty = same origin). Override only
 when the backend runs elsewhere.
 
+## Models
+
+The loader uses Diffusers' `AutoPipelineForText2Image`, so the model is
+swappable with just `SJ_MODEL_ID`, no code change:
+
+| Model id | Notes |
+|---|---|
+| `CompVis/stable-diffusion-v1-4` | Default. Small, fast, runs anywhere. |
+| `stabilityai/stable-diffusion-2-1` | Better quality, same multi-step flow. |
+| `stabilityai/stable-diffusion-xl-base-1.0` | Best quality, ~7 GB, needs a good GPU; slow on CPU/MPS. |
+| `stabilityai/sdxl-turbo` | Near-instant (1-4 steps). Set `SJ_NUM_INFERENCE_STEPS=4` and `SJ_GUIDANCE_SCALE=1` (Turbo ignores guidance). |
+
+Example: `SJ_MODEL_ID=stabilityai/stable-diffusion-2-1 uvicorn app:app`.
+
 ## API
 
 | Method | Path | Body | Returns |
 |---|---|---|---|
 | `POST` | `/api/generate` | `{ "prompt": str, "steps"?: int, "guidance_scale"?: float }` | `{ image, device, steps, guidance_scale }` (image is base64 PNG) |
+| `POST` | `/api/generate/stream` | same as above | Newline-delimited JSON: a `{"type":"progress","step","total","eta_seconds"}` line per step, then a `{"type":"result","image",...}` line. The UI uses this for the live progress bar. |
 | `GET` | `/api/health` | — | `{ status, device, model_id, loaded }` |
 
 ## Testing

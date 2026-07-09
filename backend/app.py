@@ -6,14 +6,18 @@ serves it from the same origin at ``/`` (so no CORS is needed in production).
 
 from __future__ import annotations
 
+import asyncio
+import json
 import logging
 import os
+import time
 from contextlib import asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 from config import Settings, get_settings
@@ -89,6 +93,72 @@ async def generate(
     return GenerateResponse(
         image=image, device=generator.device, steps=steps, guidance_scale=guidance
     )
+
+
+@app.post("/api/generate/stream")
+async def generate_stream(
+    body: GenerateRequest,
+    generator: Annotated[ImageGenerator, Depends(get_generator)],
+) -> StreamingResponse:
+    """Generate an image, streaming per-step progress as newline-delimited JSON.
+
+    Emits one ``{"type": "progress", ...}`` line per denoising step with an ETA,
+    then a final ``{"type": "result", "image": ...}`` line (or ``"error"``).
+    """
+    loop = asyncio.get_running_loop()
+    queue: asyncio.Queue = asyncio.Queue()
+    start = time.monotonic()
+
+    def on_progress(done: int, total: int) -> None:
+        # Runs in the worker thread; hand the event back to the event loop.
+        elapsed = time.monotonic() - start
+        eta = (elapsed / done) * (total - done) if done else None
+        event = {
+            "type": "progress",
+            "step": done,
+            "total": total,
+            "elapsed_seconds": round(elapsed, 1),
+            "eta_seconds": round(eta, 1) if eta is not None else None,
+        }
+        loop.call_soon_threadsafe(queue.put_nowait, event)
+
+    async def run() -> None:
+        try:
+            image, steps, guidance = await run_in_threadpool(
+                generator.generate,
+                body.prompt,
+                body.steps,
+                body.guidance_scale,
+                on_progress,
+            )
+            queue.put_nowait(
+                {
+                    "type": "result",
+                    "image": image,
+                    "device": generator.device,
+                    "steps": steps,
+                    "guidance_scale": guidance,
+                    "elapsed_seconds": round(time.monotonic() - start, 1),
+                }
+            )
+        except Exception:
+            logger.exception("Streaming generation failed")
+            queue.put_nowait({"type": "error", "detail": "Image generation failed."})
+        finally:
+            queue.put_nowait(None)  # sentinel: stream complete
+
+    async def event_stream():
+        task = asyncio.create_task(run())
+        try:
+            while True:
+                event = await queue.get()
+                if event is None:
+                    break
+                yield json.dumps(event) + "\n"
+        finally:
+            await task
+
+    return StreamingResponse(event_stream(), media_type="application/x-ndjson")
 
 
 # Serve the built frontend from the same origin when it exists (production

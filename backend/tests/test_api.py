@@ -42,3 +42,23 @@ def test_generate_rejects_empty_prompt(client):
 def test_generate_rejects_out_of_range_steps(client):
     response = client.post("/api/generate", json={"prompt": "x", "steps": 999})
     assert response.status_code == 422
+
+
+def test_generate_stream_emits_progress_then_result(client):
+    import json
+
+    with client.stream(
+        "POST", "/api/generate/stream", json={"prompt": "a cat", "steps": 3}
+    ) as response:
+        assert response.status_code == 200
+        events = [json.loads(line) for line in response.iter_lines() if line]
+
+    progress = [e for e in events if e["type"] == "progress"]
+    results = [e for e in events if e["type"] == "result"]
+
+    assert len(progress) == 3
+    assert progress[-1]["step"] == 3
+    assert progress[-1]["total"] == 3
+    assert len(results) == 1
+    assert results[0]["image"]
+    assert results[0]["device"] == "cpu"
