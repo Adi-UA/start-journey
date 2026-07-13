@@ -4,7 +4,7 @@
 # instead, e.g.:
 #   pip install torch --index-url https://download.pytorch.org/whl/cu121
 -r requirements-web.txt
-torch==2.5.1
+torch==2.12.1
 diffusers==0.31.0
 transformers==4.46.3
 accelerate==1.1.1
