@@ -6,7 +6,7 @@
 -r requirements-web.txt
 torch==2.5.1
 diffusers==0.31.0
-transformers==4.46.3
+transformers==5.5.0
 accelerate==1.1.1
 safetensors==0.4.5
 Pillow==11.0.0
