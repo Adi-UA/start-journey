@@ -9,4 +9,4 @@ diffusers==0.31.0
 transformers==4.46.3
 accelerate==1.1.1
 safetensors==0.4.5
-Pillow==11.0.0
+Pillow==12.3.0
